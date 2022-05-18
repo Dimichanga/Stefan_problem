@@ -45,7 +45,7 @@ def onedimensional_Stefan (str1, str2, str3, onedimens, Left, times):
     while times.actual < times.duration:
 
         sheet.cell(row = count + 2, column = 1).value = times.actual
-        for i in range (numb+1):
+        for i in range (phase_index+1):
             sheet.cell(row = count+2, column = i+2).value = u[i]
         count += 1
         
