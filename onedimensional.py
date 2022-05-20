@@ -15,6 +15,7 @@ def onedimensional_Stefan (str1, str2, str3, onedimens, Left, times):
     h = (onedimens.length / numb) 
     eps = float(input("Enter epsilon for the accuracy of iterations of time steps: "))
     phase_index = int(input("Enter the coordinate of the phase transition boundary: "))
+    coef_temp = 1.08e-6
 
     Nl=len(Left.table)
     u=[None] * (numb+1)
@@ -51,17 +52,16 @@ def onedimensional_Stefan (str1, str2, str3, onedimens, Left, times):
         
         for i in range (numb+1):
             u_[i] = u[i]
-
+        u[0] = Left.get(times.actual)
+        u[phase_index] =0
         
         while (abs(times.step - times.prev_step) >= eps):
             times.prev_step = times.step
-            times.step = -((enthalpy / coef_therm_cond )*h + 0.5*(u[phase_index]-u_[phase_index])) / ((u[phase_index] - u[phase_index-1]) / h)
+            times.step = ((enthalpy / coef_therm_cond )*h + 0.5*(u[phase_index]-u_[phase_index])) / ((u[phase_index] - u[phase_index-1]) / h)
 
-        A = (- tau) / (h**2)
-        B = 1 + (2 * tau/(h**2))
+        A = (- tau*coef_temp) / (h**2)
+        B = 1 + (2 * tau*coef_temp/(h**2))
         C = A
-        u[0] = Left.get(times.actual)
-        u[phase_index] =0
         gamma [1] = B
         alpha[1] = -C / gamma[1]
         beta[1] = (u_[1] - A*u[0]) / gamma[1]
